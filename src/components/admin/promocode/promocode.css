@@ -1,0 +1,84 @@
+/* PromoCode.css */
+.promoCode_container_unique {
+    min-height: 100vh;
+    background-color: #F6F0F0;
+    padding: 1rem;
+  }
+  
+  .promoCode_innerContainer_unique {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .promoCode_title_unique {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #BDB395;
+  }
+  
+  .promoCode_formContainer_unique {
+    background-color: #F2E2B1;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    margin-bottom: 1.5rem;
+  }
+  
+  .promoCode_formTitle_unique {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #BDB395;
+  }
+  
+  .promoCode_formGroup_unique {
+    margin-bottom: 1rem;
+  }
+  
+  .promoCode_formGroup_unique label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .promoCode_formGroup_unique input,
+  .promoCode_formGroup_unique select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+  }
+  
+  .promoCode_submitButton_unique {
+    background-color: #D5C7A3;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  
+  .promoCode_listContainer_unique {
+    background-color: #F2E2B1;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .promoCode_listTitle_unique {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #BDB395;
+  }
+  
+  .promoCode_list_unique {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .promoCode_listItem_unique {
+    margin-bottom: 0.5rem;
+  }

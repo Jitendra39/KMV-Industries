@@ -1,8 +1,29 @@
 import Link from "next/link";
-
+import { signUp, user } from "../database/Auth";
 import Layout from "../layouts/Main";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const RegisterPage = () => (
+const RegisterPage = () => {
+  const router = useRouter();
+ 
+  useEffect(() =>{
+   
+    if(user){
+       router.push('/');
+    }
+  }, []);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    if (e.target[2].value === "on") {
+      const result = await signUp(e.target[0].value, e.target[1].value);
+      console.log("submit", result);
+    }
+  };
+   
+  return (
+    <>
   <Layout>
     <section className="form-page">
       <div className="container">
@@ -23,32 +44,22 @@ const RegisterPage = () => (
             ever since the 1500s
           </p>
 
-          <form className="form">
+          <form className="form" onSubmit={(e) => handleSubmit(e)}>
             <div className="form__input-row">
               <input
-                className="form__input"
-                placeholder="First Name"
-                type="text"
+                className="Email"
+                placeholder="Email"
+                type="email"
+                required
               />
             </div>
 
             <div className="form__input-row">
               <input
-                className="form__input"
-                placeholder="Last Name"
-                type="text"
-              />
-            </div>
-
-            <div className="form__input-row">
-              <input className="form__input" placeholder="Email" type="text" />
-            </div>
-
-            <div className="form__input-row">
-              <input
-                className="form__input"
-                type="Password"
+                className="password"
+                type="password"
                 placeholder="Password"
+                required
               />
             </div>
 
@@ -62,6 +73,7 @@ const RegisterPage = () => (
                     name="signed-in"
                     type="checkbox"
                     id="check-signed-in"
+                    required
                   />
                   <span className="checkbox__check" />
                   <p>
@@ -72,7 +84,7 @@ const RegisterPage = () => (
             </div>
 
             <button
-              type="button"
+              type="submit"
               className="btn btn--rounded btn--yellow btn-submit"
             >
               Sign up
@@ -86,6 +98,9 @@ const RegisterPage = () => (
       </div>
     </section>
   </Layout>
-);
+    </>
+  )
+  
+};
 
 export default RegisterPage;

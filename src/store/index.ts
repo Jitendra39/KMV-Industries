@@ -42,7 +42,7 @@ const makeStore = ({ isServer }: { isServer: boolean }) => {
     }); // Creating the store again
 
     // @ts-ignore:next-line
-    store.__persistor = persistStore(store); // This creates a persistor object & push that persisted object to .__persistor, so that we can avail the persistability feature
+    //store.__persistor = persistStore(store); // This creates a persistor object & push that persisted object to .__persistor, so that we can avail the persistability feature
 
     return store;
   }

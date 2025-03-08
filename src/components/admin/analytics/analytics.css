@@ -1,0 +1,63 @@
+/* OrderSummary.css */
+.orderSummary_container_unique {
+    min-height: 100vh;
+    background-color: #F6F0F0;
+    padding: 1rem;
+  }
+  
+  .orderSummary_innerContainer_unique {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .orderSummary_title_unique {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #BDB395;
+  }
+  
+  .orderSummary_grid_unique {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .orderSummary_grid_unique {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .orderSummary_card_unique {
+    background-color: #F2E2B1;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .orderSummary_cardTitle_unique {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #000000;
+  }
+  
+  .orderSummary_cardSubtitle_unique {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+  }
+  
+  .orderSummary_list_unique {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .orderSummary_listItem_unique {
+    margin-bottom: 0.5rem;
+  }
+  
+  .orderSummary_fullWidth_unique {
+      grid-column: 1 / -1;
+  }

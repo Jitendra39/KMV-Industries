@@ -1,23 +1,43 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-
+import { signIn, user, getUser, GoogleProvider } from "@/database/Auth";
 import Layout from "../layouts/Main";
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
-
+ 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+ 
 type LoginMail = {
   email: string;
   password: string;
 };
 
-const LoginPage = () => {
+
+const LoginPage =    () => {
+  
+  const router  = useRouter();
   const { register, handleSubmit, errors } = useForm();
+ 
+ 
+  useEffect(() =>{
+
+  async function useUser() {
+    const data = await getUser();
+    if(data){
+      router.push('/');
+    }
+  }
+
+  useUser();
+
+  }, []);
 
   const onSubmit = async (data: LoginMail) => {
-    await postData(`${server}/api/login`, {
-      email: data.email,
-      password: data.password,
-    });
+    if (user) {
+      console.log(user);
+      return;
+    }
+    const result = await signIn(data.email, data.password);
+    console.log(result);
   };
 
   return (
@@ -34,9 +54,7 @@ const LoginPage = () => {
           <div className="form-block">
             <h2 className="form-block__title">Log in</h2>
             <p className="form-block__description">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s
+              Sign in to your account to continue
             </p>
 
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -106,9 +124,13 @@ const LoginPage = () => {
               </div>
 
               <div className="form__btns">
-                <button type="button" className="btn-social fb-btn">
+                <button
+                  type="button"
+                  onClick={() => GoogleProvider()}
+                  className="btn-social fb-btn"
+                >
                   <i className="icon-facebook" />
-                  Facebook
+                  Google
                 </button>
                 <button type="button" className="btn-social google-btn">
                   <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
