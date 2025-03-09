@@ -4,7 +4,6 @@ import { signIn, user, getUser, GoogleProvider } from "@/database/Auth";
 import Layout from "../layouts/Main";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
  
 type LoginMail = {
   email: string;
@@ -23,7 +22,7 @@ const LoginPage = () => {
       try {
         const data = await getUser();
         if(data){
-          router.push('/');
+          router.push('/profile');
         }
       } catch (error) {
         console.error("Error checking user:", error);
@@ -67,19 +66,12 @@ const LoginPage = () => {
     return (
       <Layout>
         <div className="container flex justify-center items-center min-h-[60vh]">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <motion.div 
-              animate={{ rotate: 360 }} 
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full mx-auto mb-4"
+          <div className="text-center animate-fade-in">
+            <div 
+              className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full mx-auto mb-4 animate-spin"
             />
             <p className="text-xl">Loading...</p>
-          </motion.div>
+          </div>
         </div>
       </Layout>
     );
@@ -89,48 +81,23 @@ const LoginPage = () => {
     <Layout>
       <section className="form-page">
         <div className="container">
-          <motion.div 
-            className="back-button-section"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+          <div className="back-button-section animate-fade-slide-left">
             <Link href="/products">
               <i className="icon-left" />
               Back to store
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.div 
-            className="form-block"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <motion.h2 
-              className="form-block__title"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
+          <div className="form-block animate-fade-slide-up">
+            <h2 className="form-block__title animate-fade-in">
               Log in
-            </motion.h2>
-            <motion.p 
-              className="form-block__description"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
+            </h2>
+            <p className="form-block__description animate-fade-in">
               Sign in to your account to continue
-            </motion.p>
+            </p>
 
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
-              <motion.div 
-                className="form__input-row"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.5 }}
-              >
+              <div className="form__input-row animate-fade-slide-up">
                 <input
                   className="form__input"
                   placeholder="email"
@@ -144,34 +111,19 @@ const LoginPage = () => {
                 />
 
                 {errors.email && errors.email.type === "required" && (
-                  <motion.p 
-                    className="message message--error"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <p className="message message--error animate-fade-in">
                     This field is required
-                  </motion.p>
+                  </p>
                 )}
 
                 {errors.email && errors.email.type === "pattern" && (
-                  <motion.p 
-                    className="message message--error"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <p className="message message--error animate-fade-in">
                     Please write a valid email
-                  </motion.p>
+                  </p>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className="form__input-row"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.6 }}
-              >
+              <div className="form__input-row animate-fade-slide-up">
                 <input
                   className="form__input"
                   type="password"
@@ -180,23 +132,13 @@ const LoginPage = () => {
                   ref={register({ required: true })}
                 />
                 {errors.password && errors.password.type === "required" && (
-                  <motion.p 
-                    className="message message--error"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <p className="message message--error animate-fade-in">
                     This field is required
-                  </motion.p>
+                  </p>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className="form__info"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.7 }}
-              >
+              <div className="form__info animate-fade-slide-up">
                 <div className="checkbox-wrapper">
                   <label
                     htmlFor="check-signed-in"
@@ -218,73 +160,46 @@ const LoginPage = () => {
                 >
                   Forgot password?
                 </Link>
-              </motion.div>
+              </div>
 
-              <motion.div 
-                className="form__btns"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.8 }}
-              >
-                <motion.button
+              <div className="form__btns animate-fade-slide-up">
+                <button
                   type="button"
                   onClick={handleGoogleSignIn}
-                  className="btn-social fb-btn"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  className="btn-social fb-btn hover:scale-103 active:scale-97"
                   disabled={isGoogleLoading}
                 >
                   {isGoogleLoading ? (
-                    <motion.div 
-                      className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    />
+                    <div className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2 animate-spin" />
                   ) : (
                     <i className="icon-facebook" />
                   )}
                   Google
-                </motion.button>
-                <motion.button 
+                </button>
+                <button 
                   type="button" 
-                  className="btn-social google-btn"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  className="btn-social google-btn hover:scale-103 active:scale-97"
                 >
                   <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
-                </motion.button>
-              </motion.div>
+                </button>
+              </div>
 
-              <motion.button
+              <button
                 type="submit"
-                className="btn btn--rounded btn--yellow btn-submit"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                className="btn btn--rounded btn--yellow btn-submit hover:scale-103 active:scale-97 animate-fade-slide-up"
                 disabled={isLoading}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.9 }}
               >
                 {isLoading ? (
-                  <motion.div 
-                    className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  />
+                  <div className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2 animate-spin" />
                 ) : null}
                 {isLoading ? "Signing in..." : "Sign in"}
-              </motion.button>
+              </button>
 
-              <motion.p 
-                className="form__signup-link"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 1 }}
-              >
+              <p className="form__signup-link animate-fade-slide-up">
                 Not a member yet? <Link href="/register">Sign up</Link>
-              </motion.p>
+              </p>
             </form>
-          </motion.div>
+          </div>
         </div>
       </section>
     </Layout>

@@ -70,7 +70,7 @@ const Footer = () => {
                 <a href="#">Find a store</a>
               </li>
               <li>
-                <a href="#">Newsletter</a>
+                <a href="#">Latest Drops</a>
               </li>
               <li>
                 <a href="#">Bacome a member</a>

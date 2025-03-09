@@ -65,8 +65,8 @@ const IndexPage = () => {
               <div className="data-item__content">
                 <h4>Free Shipping</h4>
                 <p>
-                  All purchases over $199 are eligible for free shipping via
-                  USPS First Class Mail.
+                  All purchases over ₹499 are eligible for free shipping via
+                  Delhivery Mail.
                 </p>
               </div>
             </li>

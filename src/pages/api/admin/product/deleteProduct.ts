@@ -1,3 +1,6 @@
+
+
+
 import { supabase } from '@/database/supabase';
 import { NextApiRequest, NextApiResponse } from 'next';
  
@@ -12,41 +15,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Log the request body
     console.log('Request body:', req.body);
     
-    // Extract product data from request body
-   
-  const { name, image, description, price, quantity, size } = req.body;
+    // Extract product data and ID from request body
+    const { id } = req.body;
+
     // Validate required fields
-    if (!name || !price) {
-      return res.status(400).json({ message: 'Name and price are required' });
+    if (!id) {
+      return res.status(400).json({ message: 'Product ID is required' });
     }
+ 
 
+  // Delete product from the database
+  const { data, error } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', id);
 
-    const { data: product, error } = await supabase
-      .from('products')
-      .insert({
-        name,
-        image,
-        description,
-        price,
-        quantity,
-        size
-      })
-      .select()
-      .single();
+ 
 
     if (error) {
       console.error('Supabase error:', error);
-      return res.status(400).json({ message: 'Failed to add product', error: error.message || 'Unknown error' });
-    }
-
-    if (!product) {
-      return res.status(400).json({ message: 'Failed to add product, no data returned' });
+      return res.status(400).json({ message: 'Failed to update product', error: error.message || 'Unknown error' });
     }
  
     // Return success response
     return res.status(201).json({ 
       message: 'Product added successfully',
-      product
     });
     
   } catch (error: any) {

@@ -130,9 +130,9 @@ const Promocode = () => {
               <li key={index} className="promoCode_listItem_unique">
                 <strong>{promo.code}:</strong>{' '}
                 {promo.discountType === 'percentage'
-                  ? `${promo.discountValue}% off`
+                  ? `₹{promo.discountValue}% off`
                   : promo.discountType === 'flat'
-                  ? `₹${promo.discountValue} off`
+                  ? `₹{promo.discountValue} off`
                   : 'Free Shipping'}
               </li>
             ))}

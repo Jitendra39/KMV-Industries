@@ -7,4 +7,4 @@ function ProductManagementAdminPage() {
   )
 }
 
-export default ProductManagementAdminPage
+export default ProductManagementAdminPage;

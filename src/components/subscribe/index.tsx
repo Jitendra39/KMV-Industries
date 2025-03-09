@@ -7,7 +7,7 @@ const Subscribe = () => {
           className="subscribe__content"
         >
           <h4>
-            Subscribe to our newsletter and receive exclusive offers every week
+            We'll keep you updated on our latest products and discounts!
           </h4>
 
           <form className="subscribe__form">

@@ -49,7 +49,7 @@ const PageIntro = () => {
               <i className="icon-shipping" />
               <div className="data-item__content">
                 <h4>Free Shipping</h4>
-                <p>On purchases over $199</p>
+                <p>On purchases over ₹599</p>
               </div>
             </li>
 

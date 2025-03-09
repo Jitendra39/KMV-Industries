@@ -88,7 +88,7 @@ const ShoppingCart = ({
           </button>
         </div>
       </td>
-      <td>${price}</td>
+      <td>₹{price}</td>
       <td className="cart-item-cancel">
         <i className="icon-cancel" onClick={() => removeFromCart()} />
       </td>

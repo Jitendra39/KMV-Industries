@@ -63,9 +63,9 @@ const Analytics = () => {
           <div className="orderSummary_card_unique">
             <h2 className="orderSummary_cardTitle_unique">Sales Reports</h2>
             <div className="orderSummary_cardContent_unique">
-            <p><strong>Daily Revenue:</strong> ${salesData.dailyRevenue}</p>
-            <p><strong>Weekly Revenue:</strong> ${salesData.weeklyRevenue}</p>
-            <p><strong>Monthly Revenue:</strong> ${salesData.monthlyRevenue}</p>
+            <p><strong>Daily Revenue:</strong> ₹{salesData.dailyRevenue}</p>
+            <p><strong>Weekly Revenue:</strong> ₹{salesData.weeklyRevenue}</p>
+            <p><strong>Monthly Revenue:</strong> ₹{salesData.monthlyRevenue}</p>
             </div>
           </div>
 

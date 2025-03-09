@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -29,19 +28,21 @@ const AdminHome = () => {
 // Styled Components
 const StyledAdminHomeContainer = styled.div`
   min-height: 100vh;
-  background-color: #f6f0f0;
-  color: #bdb395;
+  background-color: #f8f9fa;
+  color: #343a40;
   display: flex;
   flex-direction: column;
   padding: 2rem;
+  font-family: 'Inter', sans-serif;
 `;
 
 const StyledAdminHomeTitle = styled.h1`
   font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
   padding-left: 1rem;
-  padding-top: 1rem;
+  color: #212529;
+  border-left: 4px solid #6c5ce7;
 `;
 
 const StyledAdminHomeLinks = styled.div`
@@ -58,77 +59,40 @@ const StyledAdminHomeButton = styled.button`
   height: 100px;
   padding: 1rem;
   font-size: 1.5rem;
-  font-weight: bold;
-  color: black;
-  background-color: #d5c7a3;
-  border: 2px solid black;
+  font-weight: 600;
+  color: #212529;
+  background-color: white;
+  border: none;
   border-radius: 0.5rem;
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: #6c5ce7;
+  }
 
   &:hover {
-    transform: scale(1.05);
-    background-color: #bdb395;
-    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(108, 92, 231, 0.15);
+    color: #6c5ce7;
   }
 
   @media (min-width: 768px) {
     width: 60vw;
   }
-
+  
   @media (min-width: 1024px) {
     width: 40vw;
   }
 `;
 
 export default AdminHome;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-
-// import Link from "next/link";
-
-// const AdminHome = () => {
-//   return (
-//     <div className="min-h-screen bg-[#f6f0f0] text-[#bdb395] flex flex-col p-8">
-//       <h1 className="text-[2.5rem] font-bold mb-8 pl-4 pt-4">Admin Panel</h1>
-//       <div className="flex flex-col items-center justify-center flex-grow gap-4">
-//         {[
-//           { name: "Dashboard", path: "/dashboard" },
-//           { name: "Product Management", path: "/product-management" },
-//           { name: "Analytics & Details", path: "/order-details" },
-//           { name: "Promotional Code", path: "/promotional-code" },
-//           { name: "Stock Management", path: "/stock-management" },
-//         ].map((item) => (
-//           <Link key={item.name} href={item.path} passHref>
-//             <button style={{backgroundColor: "#d5c7a3"}} className="w-[80vw] h-[100px] p-4 text-2xl font-bold text-black bg-[#d5c7a3] border-2 border-black rounded-lg transition-all duration-300 ease-in-out cursor-pointer hover:scale-105 hover:bg-[#bdb395] hover:text-white md:w-[60vw] lg:w-[40vw]">
-//               {item.name}
-//             </button>
-//           </Link>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminHome;
-
-
-
-
-
-
-
-
-
