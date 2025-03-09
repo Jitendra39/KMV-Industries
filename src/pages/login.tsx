@@ -2,63 +2,135 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn, user, getUser, GoogleProvider } from "@/database/Auth";
 import Layout from "../layouts/Main";
- 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
  
 type LoginMail = {
   email: string;
   password: string;
 };
 
-
-const LoginPage =    () => {
-  
-  const router  = useRouter();
+const LoginPage = () => {
+  const router = useRouter();
   const { register, handleSubmit, errors } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
  
- 
-  useEffect(() =>{
-
-  async function useUser() {
-    const data = await getUser();
-    if(data){
-      router.push('/');
+  useEffect(() => {
+    async function useUser() {
+      try {
+        const data = await getUser();
+        if(data){
+          router.push('/');
+        }
+      } catch (error) {
+        console.error("Error checking user:", error);
+      } finally {
+        setPageLoading(false);
+      }
     }
-  }
 
-  useUser();
-
-  }, []);
+    useUser();
+  }, [router]);
 
   const onSubmit = async (data: LoginMail) => {
     if (user) {
       console.log(user);
       return;
     }
-    const result = await signIn(data.email, data.password);
-    console.log(result);
+    
+    setIsLoading(true);
+    try {
+      const result = await signIn(data.email, data.password);
+      console.log(result);
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      await GoogleProvider();
+    } catch (error) {
+      console.error("Google login error:", error);
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
+  if (pageLoading) {
+    return (
+      <Layout>
+        <div className="container flex justify-center items-center min-h-[60vh]">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <motion.div 
+              animate={{ rotate: 360 }} 
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full mx-auto mb-4"
+            />
+            <p className="text-xl">Loading...</p>
+          </motion.div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <section className="form-page">
         <div className="container">
-          <div className="back-button-section">
+          <motion.div 
+            className="back-button-section"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             <Link href="/products">
               <i className="icon-left" />
               Back to store
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="form-block">
-            <h2 className="form-block__title">Log in</h2>
-            <p className="form-block__description">
+          <motion.div 
+            className="form-block"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <motion.h2 
+              className="form-block__title"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              Log in
+            </motion.h2>
+            <motion.p 
+              className="form-block__description"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
               Sign in to your account to continue
-            </p>
+            </motion.p>
 
             <form className="form" onSubmit={handleSubmit(onSubmit)}>
-              <div className="form__input-row">
+              <motion.div 
+                className="form__input-row"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+              >
                 <input
                   className="form__input"
                   placeholder="email"
@@ -72,19 +144,34 @@ const LoginPage =    () => {
                 />
 
                 {errors.email && errors.email.type === "required" && (
-                  <p className="message message--error">
+                  <motion.p 
+                    className="message message--error"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     This field is required
-                  </p>
+                  </motion.p>
                 )}
 
                 {errors.email && errors.email.type === "pattern" && (
-                  <p className="message message--error">
+                  <motion.p 
+                    className="message message--error"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     Please write a valid email
-                  </p>
+                  </motion.p>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="form__input-row">
+              <motion.div 
+                className="form__input-row"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.6 }}
+              >
                 <input
                   className="form__input"
                   type="password"
@@ -93,13 +180,23 @@ const LoginPage =    () => {
                   ref={register({ required: true })}
                 />
                 {errors.password && errors.password.type === "required" && (
-                  <p className="message message--error">
+                  <motion.p 
+                    className="message message--error"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     This field is required
-                  </p>
+                  </motion.p>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="form__info">
+              <motion.div 
+                className="form__info"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.7 }}
+              >
                 <div className="checkbox-wrapper">
                   <label
                     htmlFor="check-signed-in"
@@ -121,34 +218,73 @@ const LoginPage =    () => {
                 >
                   Forgot password?
                 </Link>
-              </div>
+              </motion.div>
 
-              <div className="form__btns">
-                <button
+              <motion.div 
+                className="form__btns"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.8 }}
+              >
+                <motion.button
                   type="button"
-                  onClick={() => GoogleProvider()}
+                  onClick={handleGoogleSignIn}
                   className="btn-social fb-btn"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  disabled={isGoogleLoading}
                 >
-                  <i className="icon-facebook" />
+                  {isGoogleLoading ? (
+                    <motion.div 
+                      className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                  ) : (
+                    <i className="icon-facebook" />
+                  )}
                   Google
-                </button>
-                <button type="button" className="btn-social google-btn">
+                </motion.button>
+                <motion.button 
+                  type="button" 
+                  className="btn-social google-btn"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
                   <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
 
-              <button
+              <motion.button
                 type="submit"
                 className="btn btn--rounded btn--yellow btn-submit"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                disabled={isLoading}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.9 }}
               >
-                Sign in
-              </button>
+                {isLoading ? (
+                  <motion.div 
+                    className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  />
+                ) : null}
+                {isLoading ? "Signing in..." : "Sign in"}
+              </motion.button>
 
-              <p className="form__signup-link">
+              <motion.p 
+                className="form__signup-link"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 1 }}
+              >
                 Not a member yet? <Link href="/register">Sign up</Link>
-              </p>
+              </motion.p>
             </form>
-          </div>
+          </motion.div>
         </div>
       </section>
     </Layout>

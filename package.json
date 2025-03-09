@@ -24,6 +24,7 @@
     "@tailwindcss/postcss": "^4.0.12",
     "eslint-config-next": "^15.0.3",
     "lodash": "^4.17.21",
+    "motion": "^12.4.10",
     "next": "^15.0.3",
     "next-redux-wrapper": "^6.0.2",
     "postcss": "^8.5.3",

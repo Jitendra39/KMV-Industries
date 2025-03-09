@@ -1,4 +1,133 @@
-/* PromoCode.css */
+.promoCode_container_unique {
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.promoCode_innerContainer_unique {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.promoCode_title_unique {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 1rem;
+}
+
+.promoCode_formContainer_unique, .promoCode_listContainer_unique {
+  background-color: #f1f7fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #3498db;
+}
+
+.promoCode_formTitle_unique, .promoCode_listTitle_unique {
+  color: #3498db;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.promoCode_formGroup_unique {
+  margin-bottom: 1.25rem;
+}
+
+.promoCode_formGroup_unique label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #34495e;
+  font-weight: 500;
+}
+
+.promoCode_formGroup_unique input[type="text"],
+.promoCode_formGroup_unique input[type="number"],
+.promoCode_formGroup_unique select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.promoCode_formGroup_unique input[type="text"]:focus,
+.promoCode_formGroup_unique input[type="number"]:focus,
+.promoCode_formGroup_unique select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+.promoCode_formGroup_unique input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3498db;
+}
+
+.promoCode_submitButton_unique {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.promoCode_submitButton_unique:hover {
+  background-color: #2980b9;
+}
+
+.promoCode_list_unique {
+  list-style-type: none;
+  padding: 0;
+}
+
+.promoCode_listItem_unique {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid #f39c12;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.promoCode_listItem_unique:hover {
+  transform: translateX(5px);
+}
+
+.promoCode_listItem_unique strong {
+  color: #e74c3c;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* PromoCode.css
 .promoCode_container_unique {
     min-height: 100vh;
     background-color: #F6F0F0;
@@ -81,4 +210,4 @@
   
   .promoCode_listItem_unique {
     margin-bottom: 0.5rem;
-  }
+  } */

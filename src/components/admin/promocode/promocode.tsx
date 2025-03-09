@@ -1,8 +1,25 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // PromoCode.jsx
 import React, { useState, useEffect } from 'react';
-import './PromoCode.css';
 
-const promocode = () => {
+const Promocode = () => {
   const [promoCodes, setPromoCodes] = useState<{ code: string; discountType: string; discountValue: string; freeShipping: boolean; }[]>([]);
   const [newPromoCode, setNewPromoCode] = useState({
     code: '',
@@ -126,4 +143,4 @@ const promocode = () => {
   );
 };
 
-export default promocode;
+export default Promocode;

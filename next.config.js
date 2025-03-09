@@ -1,21 +1,60 @@
 
-/**
- * @type {import('next').NextConfig}
- */
+// /**
+//  * @type {import('next').NextConfig}
+//  */
 
-import path from 'path';
+// import path from 'path';
 
-const nextConfig = {
+// const nextConfig = {
+//   sassOptions: {
+//     // includePaths: [path.resolve('styles')],
+//     includePaths: [path.join(__dirname, 'styles')],
+//   },
+//   reactStrictMode: true,
+//   compiler: {
+//     styledComponents: false,
+//   },
+// };
+
+// export default nextConfig;
+
+
+
+
+
+
+
+
+
+
+const path = require('path')
+
+module.exports = {
   sassOptions: {
-    includePaths: [path.resolve('styles')],
+    includePaths: [path.join(__dirname, 'styles')],
   },
-  reactStrictMode: true,
-  compiler: {
-    styledComponents: false,
-  },
-};
+    compiler: {
+      styledComponents: true,
+    },
+}
 
-export default nextConfig;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // const path = require('path')
 

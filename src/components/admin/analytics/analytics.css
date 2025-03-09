@@ -1,5 +1,163 @@
-/* OrderSummary.css */
+/* Analytics Dashboard Styles */
 .orderSummary_container_unique {
+  min-height: 100vh;
+  background-color: #f6f9fc;
+  padding: 2rem;
+  font-family: var(--main-font, sans-serif);
+}
+
+.orderSummary_innerContainer_unique {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.orderSummary_title_unique {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.orderSummary_title_unique:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+.orderSummary_grid_unique {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .orderSummary_grid_unique {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.orderSummary_card_unique {
+  background-color: #ffffff;
+  padding: 1.75rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-top: 4px solid #3498db;
+}
+
+.orderSummary_card_unique:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.orderSummary_cardTitle_unique {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+}
+
+.orderSummary_cardTitle_unique::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #3498db;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.orderSummary_cardSubtitle_unique {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.orderSummary_cardContent_unique p {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #ecf0f1;
+}
+
+.orderSummary_cardContent_unique p:last-child {
+  border-bottom: none;
+}
+
+.orderSummary_cardContent_unique p strong {
+  color: #34495e;
+}
+
+.orderSummary_list_unique {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.orderSummary_listItem_unique {
+  padding: 0.6rem 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ecf0f1;
+  transition: background-color 0.2s;
+}
+
+.orderSummary_listItem_unique:last-child {
+  border-bottom: none;
+}
+
+.orderSummary_listItem_unique:hover {
+  background-color: #f8fafc;
+  padding-left: 0.5rem;
+}
+
+.orderSummary_fullWidth_unique {
+  grid-column: 1 / -1;
+}
+
+/* Custom styling for different card types */
+.orderSummary_card_unique:nth-child(1) {
+  border-top-color: #3498db; /* Blue */
+}
+
+.orderSummary_card_unique:nth-child(2) {
+  border-top-color: #2ecc71; /* Green */
+}
+
+.orderSummary_card_unique:nth-child(3) {
+  border-top-color: #f39c12; /* Orange */
+}
+
+.orderSummary_card_unique:nth-child(4) {
+  border-top-color: #9b59b6; /* Purple */
+}
+
+.orderSummary_card_unique:nth-child(5) {
+  border-top-color: #e74c3c; /* Red */
+}
+
+/* Make revenue numbers stand out */
+.orderSummary_cardContent_unique p strong + span {
+  font-weight: 600;
+  color: #2ecc71;
+}
+
+
+
+/* 
+OrderSummary.css */
+/* .orderSummary_container_unique {
     min-height: 100vh;
     background-color: #F6F0F0;
     padding: 1rem;
@@ -60,4 +218,4 @@
   
   .orderSummary_fullWidth_unique {
       grid-column: 1 / -1;
-  }
+  } */
