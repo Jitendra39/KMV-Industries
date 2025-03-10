@@ -59,6 +59,7 @@ for (const fileItem of fileItemsArray) {
         const fileName = fileItem.originalFilename || `${Date.now()}_${path.basename(fileItem.filepath)}`;
         
         // Upload to Supabase bucket
+        console.log(`Uploading ${fileName} for product ${productId}...`);
         const { data, error } = await supabaseAdmin.storage
           .from('images') // Replace with your bucket name
           .upload(`${productId}/${fileName}`, fileData, {
@@ -66,6 +67,7 @@ for (const fileItem of fileItemsArray) {
             cacheControl: '3600',
             upsert: false,
           });
+        console.log(`Upload complete for ${fileName}: ${error ? 'Failed' : 'Success'}`);
 
         if (error) {
           console.error('Upload error:', error);
