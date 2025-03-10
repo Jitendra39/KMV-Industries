@@ -278,6 +278,7 @@ h5 {
 }
 
 .site-logo {
+  color: #000000;
   display: flex;
   font-size: 14px;
   align-items: center;
@@ -325,7 +326,7 @@ h5 {
   left: 0;
   z-index: 999;
   height: 65px;
-  color: #fff;
+  color: #000000;
   box-shadow: none;
   transition: all 0.3s ease;
   @include breakpoint(phone) {
@@ -344,7 +345,7 @@ h5 {
     align-items: center;
   }
   .site-logo {
-    color: #fff;
+    color: #000000;
   }
   .site-header__btn-avatar {
     display: none;
@@ -387,7 +388,8 @@ h5 {
     margin-left: auto;
     margin-right: auto;
     position: fixed;
-    background-color: #fff;
+    color: #000;
+    background-color: #000000;
     transition: all 0.3s ease;
     border-left: 1px solid #e5e5e5;
     @include breakpoint(tablet-lg) {
@@ -398,7 +400,13 @@ h5 {
       border: none;
       background-color: transparent;
     }
+   
+     .site-nav site-nav-link{
+      color: #000;
+    }
+
     .site-nav__btn {
+      color: black;
       padding: 13px 18px;
       width: 100%;
       font-size: 15px;
@@ -422,7 +430,7 @@ h5 {
       @include breakpoint(tablet-lg) {
         width: auto;
         padding: 0;
-        color: #fff;
+        color: #000000;
         margin-right: 76px;
         display: inline-block;
         font-size: 14px;

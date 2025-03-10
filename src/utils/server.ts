@@ -4,4 +4,4 @@
 //   ? "http://localhost:3000"
 //   : "https://next-ecommerce-front.vercel.app";
 
-export const server = process.env.FRONTEND_URL;
+export const server = process.env.NEXT_PUBLIC_FRONTEND_URL;

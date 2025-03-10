@@ -85,16 +85,27 @@ const ProductManagement = () => {
         // If we have new image files, we need to upload them first
         let uploadedImageUrls: string[] = [];
         
+   
+
         if (imageFiles.length > 0) {
           const formData = new FormData();
-          imageFiles.forEach(file => {
+          imageFiles.forEach((file, index) => {
             formData.append('images', file);
+            // console.log(`Adding file ${index}:`, file.name, file.size);
           });
+          
+          // Log FormData entries for debugging
+          // console.log("FormData contents:");
+          // for (const pair of (formData as any).entries()) {
+          //   console.log(pair[0], pair[1]);
+          // }
 
           const uploadResponse = await fetch('/api/admin/product/uploadImages', {
             method: 'POST',
             body: formData,
           });
+
+          console.log("uploadResponse", uploadResponse);
 
           if (!uploadResponse.ok) {
             throw new Error(`Upload failed with status ${uploadResponse.status}`);
@@ -153,7 +164,7 @@ const ProductManagement = () => {
 
       console.log("images",{imageFiles, previewImages});
 
-      handleRequest('addProduct', {...formData, image: imageFiles})
+      handleRequest('addProduct', formData)
         .then(data => {
           toast.dismiss();
           toast.success('Product added successfully');

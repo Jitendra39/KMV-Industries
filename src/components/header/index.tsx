@@ -60,7 +60,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
     <header className={`site-header ${!onTop ? "site-header--fixed" : ""}`}>
       <div className="container">
         <Link href="/">
-          <h1 className="site-logo">
+          <h1 className="site-logo ">
             <Logo />
             KMV Industries
           </h1>
@@ -69,9 +69,9 @@ const Header = ({ isErrorPage }: HeaderType) => {
           ref={navRef}
           className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
         >
-          <Link href="/products">Products</Link>
-          <a href="#">Inspiration</a>
-          <a href="#">Rooms</a>
+            <Link className="site-nav-link" href="/products" style={{ color: "black" }}>Products</Link>
+          <Link className="site-nav-link"  href="#" style={{ color: "black" }}  >Inspiration</Link>
+          <Link className="site-nav-link"  href="#" style={{ color: "black" }} >Rooms</Link>
           <button className="site-nav__btn">
             <p>Account</p>
           </button>

@@ -18,11 +18,12 @@ type ProductPageType = {
   product: ProductType;
 };
 
+
+
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { pid } = query;
   const res = await fetch(`${server}/api/product/${pid}`);
   const product = await res.json();
-
   return {
     props: {
       product,
