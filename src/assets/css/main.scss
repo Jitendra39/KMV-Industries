@@ -479,6 +479,7 @@ h5 {
 }
 
 .search-form-wrapper {
+  color: #000;
   position: relative;
   z-index: 5000;
   .search-form {
@@ -489,7 +490,7 @@ h5 {
     height: 100vh;
     right: 0;
     transition: all 0.3s ease;
-    background-color: #fff;
+    background-color: #000000;
     @include breakpoint(tablet-lg) {
       position: static;
       height: auto;

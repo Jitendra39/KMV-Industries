@@ -7,6 +7,7 @@ import useOnClickOutside from "use-onclickoutside";
 import type { RootState } from "@/store";
 
 import Logo from "../../assets/icons/logo";
+import { FaSearch, FaTimes } from "react-icons/fa";
 
 type HeaderType = {
   isErrorPage?: boolean;
@@ -78,26 +79,29 @@ const Header = ({ isErrorPage }: HeaderType) => {
         </nav>
 
         <div className="site-header__actions">
-          <button
+            <button
             ref={searchRef}
             className={`search-form-wrapper ${searchOpen ? "search-form--active" : ""}`}
-          >
+            >
             <form className="search-form">
-              <i
-                className="icon-cancel"
-                onClick={() => setSearchOpen(!searchOpen)}
+              <FaTimes
+              className="icon-cancel"
+              onClick={() => setSearchOpen(!searchOpen)}
+              style={{ color: "black" }}
               />
               <input
-                type="text"
-                name="search"
-                placeholder="Enter the product you are looking for"
+              type="text"
+              name="search"
+              placeholder="Enter the product you are looking for"
+              className="input-black"
               />
             </form>
-            <i
+            <FaSearch
               onClick={() => setSearchOpen(!searchOpen)}
               className="icon-search"
+              style={{ color: "black" }}
             />
-          </button>
+            </button>
           <Link href="/cart" legacyBehavior>
             <button className="btn-cart">
               <i className="icon-cart" />
