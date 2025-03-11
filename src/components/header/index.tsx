@@ -7,7 +7,7 @@ import useOnClickOutside from "use-onclickoutside";
 import type { RootState } from "@/store";
 
 import Logo from "../../assets/icons/logo";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes, FaShoppingCart , FaUser } from "react-icons/fa";
 
 type HeaderType = {
   isErrorPage?: boolean;
@@ -102,19 +102,19 @@ const Header = ({ isErrorPage }: HeaderType) => {
               style={{ color: "black" }}
             />
             </button>
-          <Link href="/cart" legacyBehavior>
+            <Link href="/cart" legacyBehavior>
             <button className="btn-cart">
-              <i className="icon-cart" />
+              <FaShoppingCart style={{ color: "black" }} />
               {cartItems.length > 0 && (
-                <span className="btn-cart__count">{cartItems.length}</span>
+              <span className="btn-cart__count">{cartItems.length}</span>
               )}
             </button>
           </Link>
-          <Link href="/login" legacyBehavior>
+            <Link href="/login" legacyBehavior>
             <button className="site-header__btn-avatar">
-              <i className="icon-avatar" />
+              <FaUser style={{ color: "black" }} />
             </button>
-          </Link>
+            </Link>
           <button
             onClick={() => setMenuOpen(true)}
             className="site-header__btn-menu"
