@@ -132,6 +132,8 @@ const ProductManagement = () => {
           body: JSON.stringify(finalData),
         });
 
+        console.log("response",response);
+
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
         }
@@ -139,6 +141,7 @@ const ProductManagement = () => {
         const responseData = await response.json();
         resolve(responseData);
       } catch (error) {
+        console.error('Request error:', error);
         reject(error);
       }
     });
