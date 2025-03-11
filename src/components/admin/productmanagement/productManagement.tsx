@@ -398,26 +398,44 @@ const ProductManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+    
+                {products.map((product) => (
                 <tr key={product.id}>
                   <td className="product-management-table-cell">{product.name}</td>
                   <td className="product-management-table-cell product-management-image-cell">
-                    {product.images[0] && product.images[0].length > 0 ? (
-                      <div className="product-management-table-images">
-                        <img
-                          src={product.images[0][0]}
-                          alt={product.name}
-                          className="product-management-image"
-                        />
-                        {product.images.length > 1 && (
-                          <span className="product-management-image-count">
-                            +{product.images.length - 1}
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="product-management-no-image">No image</div>
+                  {product.images && product.images.length > 0 && product.images[0] && Array.isArray(product.images[0]) ? (
+                    // Handle nested array structure
+                    <div className="product-management-table-images">
+                    <img
+                      src={product.images[0][0]}
+                      alt={product.name}
+                      className="product-management-image"
+                    />
+                    {product.images[0].length > 1 && (
+                      <span className="product-management-image-count">
+                      +{product.images[0].length - 1} more
+                      </span>
                     )}
+                    </div>
+                  ) : (
+                    // Handle flat array structure
+                    product.images && product.images.length > 0 ? (
+                    <div className="product-management-table-images">
+                      <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="product-management-image"
+                      />
+                      {product.images.length > 1 && (
+                      <span className="product-management-image-count">
+                        +{product.images.length - 1} more
+                      </span>
+                      )}
+                    </div>
+                    ) : (
+                    <div className="product-management-no-image">No image</div>
+                    )
+                  )}
                   </td>
                   <td className="product-management-table-cell">₹{product.price}</td>
                   <td className="product-management-table-cell">{product.quantity}</td>
