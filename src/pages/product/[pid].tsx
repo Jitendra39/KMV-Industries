@@ -1,6 +1,5 @@
 import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/breadcrumb";
 import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
@@ -13,13 +12,11 @@ import type { ProductType } from "@/types";
 
 import Layout from "../../layouts/Main";
 import { server } from "../../utils/server";
+import { useRouter } from "next/router";
 
 type ProductPageType = {
   product: ProductType;
 };
-
-
-
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { pid } = query;
   const res = await fetch(`${server}/api/product/${pid}`);
@@ -33,7 +30,26 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 const Product = ({ product }: ProductPageType) => {
   const [showBlock, setShowBlock] = useState("description");
-
+  const router = useRouter();
+  
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, []); // Empty dependency array ensures this runs only on mount
+  
+  // Also scroll on route changes
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, [router.asPath]); // This runs on every route change
+  
   return (
     <Layout>
       <Breadcrumb />

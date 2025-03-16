@@ -1,4 +1,6 @@
-
+ 
+import { getUser, user } from '@/database/Auth';
+import { useRouter } from 'next/router';
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 
@@ -14,7 +16,9 @@ interface Product {
 
 const ProductManagement = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const router = useRouter();
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [deleteImages, setDeleteImages] = useState<string[]>([]);
   const [formData, setFormData] = useState<Product>({
     id: null,
     name: '',
@@ -28,7 +32,15 @@ const ProductManagement = () => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  
   useEffect(() => {
+    if(!user){
+      getUser().then().catch(() => {
+         toast.error('You are not authorized to view this page');
+         router.push('/login');
+      });
+    }
+
     fetch('/api/admin/product/getProduct')
       .then(response => response.json())
       .then(data => {
@@ -75,15 +87,46 @@ const ProductManagement = () => {
     setPreviewImages(updatedPreviews);
   };
 
-  const removeExistingImage = (index: number) => {
+  const removeExistingImage = (index: number ) => {
+    if(formData.id) {
+         const updatedImages = [...formData.images[0]];
+        setDeleteImages([...deleteImages, updatedImages[index]]);
+         updatedImages.splice(index, 1);
+         console.log(updatedImages);
+        setFormData({ ...formData, images: [updatedImages] as any});  
+       }else{
     const updatedImages = [...formData.images];
     updatedImages.splice(index, 1);
     setFormData({ ...formData, images: updatedImages });
+    }
   };
 
   const handleRequest = async (route: string, data: any): Promise<any> => {
     return new Promise(async (resolve, reject) => {
-      console.log("data",{imageFiles ,data});
+
+      if(route === 'deleteImages') {
+        const { images } = data;
+        try {
+          const response = await fetch('/api/admin/product/deleteImages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'User-ID': user?.id || ''
+            },
+            body: JSON.stringify({ images }),
+          });
+  
+          if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+          }
+          
+        } catch (error) {
+          console.error('Request error:', error);
+          reject(error);
+        }
+        
+      }
+      
       try {
         // If we have new image files, we need to upload them first
         let uploadedImageUrls: string[] = [];
@@ -96,12 +139,7 @@ const ProductManagement = () => {
             formData.append('images', file);
             // console.log(`Adding file ${index}:`, file.name, file.size);
           });
-          
-          // Log FormData entries for debugging
-          // console.log("FormData contents:");
-          // for (const pair of (formData as any).entries()) {
-          //   console.log(pair[0], pair[1]);
-          // }
+   
 
           const uploadResponse = await fetch('/api/admin/product/uploadImages', {
             method: 'POST',
@@ -151,6 +189,17 @@ const ProductManagement = () => {
     e.preventDefault();
     
     toast.loading('Saving product...');
+
+
+    if(deleteImages.length > 0) {
+      handleRequest('deleteImages', { images: deleteImages })
+        .then(_ => {
+          console.log('Images deleted successfully');
+        })
+        .catch(_ => {
+          console.error('Error deleting images');
+        });
+    }
   
 
     if (formData.id) {
@@ -283,8 +332,9 @@ const ProductManagement = () => {
                   </div>
                   
                   <div className="product-management-image-preview-container">
-                    {/* Existing images */}
-                    {formData.images && formData.images.map((image, index) => (
+                  {/* {console.log("images", formData) as any}    */}
+                  {formData.images && formData.images[0] && Array.isArray(formData.images[0]) && formData.images[0].map((image: string, index: number) => (
+                    
                       <div key={`existing-${index}`} className="product-management-image-preview-wrapper">
                         <img
                           src={image}
@@ -293,7 +343,7 @@ const ProductManagement = () => {
                         />
                         <button
                           type="button"
-                          onClick={() => removeExistingImage(index)}
+                          onClick={() => removeExistingImage(index )}
                           className="product-management-remove-image"
                         >
                           ×

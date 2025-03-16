@@ -23,7 +23,7 @@ export default function HeroSection() {
           </p>
           <div className="button-container">
             <Link href="#" className="join-button">
-              <span>Join Us</span>
+              <span> <strong>Buy Now</strong></span>
             </Link>
          
           </div>
@@ -33,7 +33,7 @@ export default function HeroSection() {
            
              
             </div>
-            <span className="listeners-text">WorldWide listeners</span>
+            <span className="listeners-text">All India Delivery</span>
           </div>
         </div>
 

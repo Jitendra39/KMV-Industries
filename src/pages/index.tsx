@@ -20,8 +20,8 @@ const IndexPage = () => {
           >
             <div className="featured-item__content">
               <h3>
-                Our latest collection of car wash shampoos has just arrived —
-                unleash the power of a spotless car today! 🚗✨
+                Get the best deals on <br />
+                <strong>Car Care Products</strong>
               </h3>
               <a href="#" className="btn btn--rounded">
                 Show Collection
@@ -34,7 +34,9 @@ const IndexPage = () => {
             className="featured-item featured-item-small-first"
           >
             <div className="featured-item__content">
-              <h3>✨ Ultimate Car Wash Combo! ✨</h3>
+              <h3>Crystal-Clear Shine with <br />
+                <strong>DFA technology</strong> 
+              </h3>
               <a href="#" className="btn btn--rounded">
                 More details
               </a>
@@ -46,7 +48,10 @@ const IndexPage = () => {
             className="featured-item featured-item-small"
           >
             <div className="featured-item__content">
-              <h3>✨ Wholesale Deal Alert! ✨</h3>
+              <h3>
+                Car Care made<br />
+                <strong></strong>
+                 </h3>
               <a href="#" className="btn btn--rounded">
                 VIEW ALL
               </a>
