@@ -1,5 +1,5 @@
 import Footer from "@/components/footer";
-
+import Header from "@/components/header";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
 
@@ -9,13 +9,14 @@ import HeroSection from "@/components/hero-section/herosection";
 const IndexPage = () => {
   return (
     <Layout>
+      <Header />
      
      <HeroSection/>
 
       <section className="featured">
         <div className="container">
           <article
-            style={{ backgroundImage: "url(/images/featured-1.png)" }}
+            style={{ backgroundImage: "url()" }}
             className="featured-item featured-item-large"
           >
             <div className="featured-item__content">
@@ -30,7 +31,7 @@ const IndexPage = () => {
           </article>
 
           <article
-            style={{ backgroundImage: "url(/images/featured-2.webp)" }}
+            style={{ backgroundImage: "url()" }}
             className="featured-item featured-item-small-first"
           >
             <div className="featured-item__content">
@@ -44,7 +45,7 @@ const IndexPage = () => {
           </article>
 
           <article
-            style={{ backgroundImage: "url(/images/featured-3.webp)" }}
+            style={{ backgroundImage: "url()" }}
             className="featured-item featured-item-small"
           >
             <div className="featured-item__content">

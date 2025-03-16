@@ -32,15 +32,30 @@ const ProductManagement = () => {
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  
   useEffect(() => {
+
     if(!user){
-      getUser().then().catch(() => {
+      
+      getUser().then(
+        (user) => {
+      console.log("user",user);
+
+          if (!user) {
+            toast.error('You are not authorized to view this page');
+            router.push('/login');
+          }
+      }
+      ).catch(() => {
          toast.error('You are not authorized to view this page');
          router.push('/login');
       });
     }
 
+  });
+  
+  useEffect(() => {
+    
+   console.log("user",user);
     fetch('/api/admin/product/getProduct')
       .then(response => response.json())
       .then(data => {
@@ -100,6 +115,7 @@ const ProductManagement = () => {
     setFormData({ ...formData, images: updatedImages });
     }
   };
+ 
 
   const handleRequest = async (route: string, data: any): Promise<any> => {
     return new Promise(async (resolve, reject) => {
@@ -111,7 +127,7 @@ const ProductManagement = () => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'User-ID': user?.id || ''
+              'User-ID': user.user.id || ''
             },
             body: JSON.stringify({ images }),
           });
@@ -140,9 +156,11 @@ const ProductManagement = () => {
             // console.log(`Adding file ${index}:`, file.name, file.size);
           });
    
-
           const uploadResponse = await fetch('/api/admin/product/uploadImages', {
             method: 'POST',
+            headers: {
+              'User-ID': user.user.id || '',
+            },
             body: formData,
           });
  
@@ -166,6 +184,7 @@ const ProductManagement = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'User-ID': user.user.id || ''
           },
           body: JSON.stringify(finalData),
         });

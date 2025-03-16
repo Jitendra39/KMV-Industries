@@ -7,13 +7,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
-
+  const authAdmin = await adminAuth(userId)
+  if(!authAdmin){
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
   try {
     // Log the request body
-    console.log('Request body:', req.body);
+    
     
     // Extract product data from request body
-   
   const { name, image, description, price, quantity, size } = req.body;
     // Validate required fields
     if (!name || !price) {

@@ -28,7 +28,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
 
   const headerClass = () => {
     if (window.pageYOffset === 0) {
-      setOnTop(true);
+      setOnTop(false);
     } else {
       setOnTop(false);
     }
@@ -69,6 +69,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
         <nav
           ref={navRef}
           className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
+          style={{ backgroundColor: "white" }}
         >
             <Link className="site-nav-link" href="/products" style={{ color: "black" }}>Products</Link>
           <Link className="site-nav-link"  href="#" style={{ color: "black" }}  >Inspiration</Link>
@@ -119,7 +120,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
             onClick={() => setMenuOpen(true)}
             className="site-header__btn-menu"
           >
-            <i className="btn-hamburger">
+            <i className="btn-hamburger" style={{ backgroundColor: "white" }}>
               <span />
             </i>
           </button>

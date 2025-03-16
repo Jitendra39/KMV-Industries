@@ -15,7 +15,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("Request method:", req.method);
+  const authAdmin = await adminAuth(userId)
+  if(!authAdmin){
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });

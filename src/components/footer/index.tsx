@@ -7,11 +7,10 @@ const Footer = () => {
         <div className="site-footer__top">
           <div className="site-footer__description">
             <h6>
-              <Logo /> <span>E</span>-Shop
+              <Logo /> KMV Industries
             </h6>
             <p>
-              House My Brand designs clothing for the young, the old & everyone
-              in between – but most importantly, for the fashionable
+              Your premier destination for top-quality car care products.
             </p>
             <ul className="site-footer__social-networks">
               <li>
@@ -85,7 +84,7 @@ const Footer = () => {
                 <a href="#">store@uikit.com</a>
               </li>
               <li>
-                <a href="#">Hotline: +1 131 138 138</a>
+                <a href="#">Hotline: +91 99999 99999</a>
               </li>
             </ul>
           </div>
@@ -94,7 +93,7 @@ const Footer = () => {
 
       <div className="site-footer__bottom">
         <div className="container">
-          <p>DESIGN BY ICEO.CO - © 2019. ALL RIGHTS RESERVED.</p>
+          <p>© 2024 ALL RIGHTS RESERVED BY KMV INSDUSTRIES.</p>
         </div>
       </div>
     </footer>

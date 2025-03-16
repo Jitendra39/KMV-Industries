@@ -1,6 +1,6 @@
 import { supabaseAdmin } from "@/database/supabase";
 import { NextApiRequest, NextApiResponse } from "next";
-
+import {adminAuth} from 'src/store/server'
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -11,16 +11,19 @@ export default async function handler(
   // }
 
   try {
-    // Verify admin authentication
-
+ 
+   const userId = req.headers['user-id'];
     // Extract data from request
+    const authAdmin = await adminAuth(userId)
+    if(!authAdmin){
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
     const productimges = req.body;
 
     // Connect to database
 
     const productsCollection = supabaseAdmin.storage.from("images");
-
-    console.log("Deleting images:", { productsCollection, productimges });
+ 
 
     // Extract image paths from URLs
     const imagesToDelete = productimges.images
@@ -37,7 +40,7 @@ export default async function handler(
         throw new Error(`Failed to delete images: ${error.message}`);
       }
 
-      console.log("Image(s) deleted successfully:", data);
+      
     }
 
     return res.status(200).json({
