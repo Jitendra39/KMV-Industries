@@ -1,4 +1,5 @@
 import { supabase } from '@/database/supabase';
+import { adminAuth } from '@/store/server';
 import { NextApiRequest, NextApiResponse } from 'next';
  
 
@@ -7,6 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
+  const userId = req.headers['user-id'];
+
   const authAdmin = await adminAuth(userId)
   if(!authAdmin){
     return res.status(401).json({ error: 'Unauthorized' });

@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/database/supabase";
 import formidable from "formidable";
 import fs from "fs";
 import path from "path";
+import { adminAuth } from "@/store/server";
 
 // Disable body parsing to handle form data manually
 export const config = {
@@ -15,7 +16,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const authAdmin = await adminAuth(userId)
+   const userId = req.headers['user-id'];
+ 
+   const authAdmin = await adminAuth(userId)
   if(!authAdmin){
     return res.status(401).json({ error: 'Unauthorized' });
   }

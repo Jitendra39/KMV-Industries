@@ -1,9 +1,9 @@
 "use server";
 import { supabase } from "@/database/supabase";
 
-export const adminAuth = async (id) => {
+export const adminAuth = async (id: any) => {
   const { data: user, error } = await supabase
-    .from('admins')
+    .from('Users')
     .select('*')
     .eq('id', id)
     .single();
