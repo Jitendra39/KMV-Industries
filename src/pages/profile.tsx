@@ -3,8 +3,7 @@ import Profile from '@/components/profile/UserProfile/profile';
 import React from 'react';
 
 export default function profile() {
-    const headerHeight = 90; // Replace with your header's actual height
-
+    const headerHeight = 90;  
     return (
         <>
             <Header />

@@ -15,6 +15,7 @@ import {
   faHome,
   faBuilding
 } from '@fortawesome/free-solid-svg-icons';
+import { getUser, user } from '@/database/Auth';
 
 interface Address {
   id: string;
@@ -53,6 +54,12 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+
+if (!user) {
+  await getUser();
+}
+
+
       try {
         // Simulate fetching dummy data
         const dummyData: UserData = {
@@ -115,6 +122,13 @@ const Profile = () => {
       // Simulate API call to save data
       await new Promise(resolve => setTimeout(resolve, 500));
       
+    fetch('/api/auth/profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: user.id, data: editedData }),
+    })
       if (editedData) {
         setUserData(editedData);
       }
