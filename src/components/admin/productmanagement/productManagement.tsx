@@ -1,4 +1,3 @@
- 
 import { getUser, user } from '@/database/Auth';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect, useRef } from 'react';
@@ -12,6 +11,7 @@ interface Product {
   price: string;
   quantity: string;
   size: string;
+  category: string;
 }
 
 const ProductManagement = () => {
@@ -27,6 +27,7 @@ const ProductManagement = () => {
     price: '',
     quantity: '',
     size: '',
+    category: ''
   });
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -34,28 +35,28 @@ const ProductManagement = () => {
 
   useEffect(() => {
 
-    if(!user){
-      
+    if (!user) {
+
       getUser().then(
         (user) => {
-      console.log("user",user);
+          console.log("user", user);
 
           if (!user) {
             toast.error('You are not authorized to view this page');
             router.push('/login');
           }
-      }
+        }
       ).catch(() => {
-         toast.error('You are not authorized to view this page');
-         router.push('/login');
+        toast.error('You are not authorized to view this page');
+        router.push('/login');
       });
     }
 
   });
-  
+
   useEffect(() => {
-    
-   console.log("user",user);
+
+    console.log("user", user);
     fetch('/api/admin/product/getProduct')
       .then(response => response.json())
       .then(data => {
@@ -64,7 +65,7 @@ const ProductManagement = () => {
           ...product,
           images: product.images || (product.image ? [product.image] : []),
         }));
-        console.log("updatedProducts",updatedProducts);
+        console.log("updatedProducts", updatedProducts);
         setProducts(updatedProducts);
       })
       .catch(_ => {
@@ -72,7 +73,7 @@ const ProductManagement = () => {
       });
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -81,7 +82,7 @@ const ProductManagement = () => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       setImageFiles(prev => [...prev, ...files]);
-      
+
       // Create preview URLs
       const newPreviewUrls = files.map(file => URL.createObjectURL(file));
       setPreviewImages(prev => [...prev, ...newPreviewUrls]);
@@ -91,36 +92,36 @@ const ProductManagement = () => {
   const removeImage = (index: number) => {
     const updatedFiles = [...imageFiles];
     const updatedPreviews = [...previewImages];
-    
+
     // Release the object URL to avoid memory leaks
     URL.revokeObjectURL(updatedPreviews[index]);
-    
+
     updatedFiles.splice(index, 1);
     updatedPreviews.splice(index, 1);
-    
+
     setImageFiles(updatedFiles);
     setPreviewImages(updatedPreviews);
   };
 
-  const removeExistingImage = (index: number ) => {
-    if(formData.id) {
-         const updatedImages = [...formData.images[0]];
-        setDeleteImages([...deleteImages, updatedImages[index]]);
-         updatedImages.splice(index, 1);
-         console.log(updatedImages);
-        setFormData({ ...formData, images: [updatedImages] as any});  
-       }else{
-    const updatedImages = [...formData.images];
-    updatedImages.splice(index, 1);
-    setFormData({ ...formData, images: updatedImages });
+  const removeExistingImage = (index: number) => {
+    if (formData.id) {
+      const updatedImages = [...formData.images[0]];
+      setDeleteImages([...deleteImages, updatedImages[index]]);
+      updatedImages.splice(index, 1);
+      console.log(updatedImages);
+      setFormData({ ...formData, images: [updatedImages] as any });
+    } else {
+      const updatedImages = [...formData.images];
+      updatedImages.splice(index, 1);
+      setFormData({ ...formData, images: updatedImages });
     }
   };
- 
+
 
   const handleRequest = async (route: string, data: any): Promise<any> => {
     return new Promise(async (resolve, reject) => {
 
-      if(route === 'deleteImages') {
+      if (route === 'deleteImages') {
         const { images } = data;
         try {
           const response = await fetch('/api/admin/product/deleteImages', {
@@ -131,23 +132,23 @@ const ProductManagement = () => {
             },
             body: JSON.stringify({ images }),
           });
-  
+
           if (!response.ok) {
             throw new Error(`Request failed with status ${response.status}`);
           }
-          
+
         } catch (error) {
           console.error('Request error:', error);
           reject(error);
         }
-        
+
       }
-      
+
       try {
         // If we have new image files, we need to upload them first
         let uploadedImageUrls: string[] = [];
-        
-   
+
+
 
         if (imageFiles.length > 0) {
           const formData = new FormData();
@@ -155,7 +156,7 @@ const ProductManagement = () => {
             formData.append('images', file);
             // console.log(`Adding file ${index}:`, file.name, file.size);
           });
-   
+
           const uploadResponse = await fetch('/api/admin/product/uploadImages', {
             method: 'POST',
             headers: {
@@ -163,14 +164,14 @@ const ProductManagement = () => {
             },
             body: formData,
           });
- 
+
 
           if (!uploadResponse.ok) {
             throw new Error(`Upload failed with status ${uploadResponse.status}`);
           }
 
           const uploadResult = await uploadResponse.json();
- 
+
           uploadedImageUrls = uploadResult.urls;
         }
 
@@ -189,7 +190,7 @@ const ProductManagement = () => {
           body: JSON.stringify(finalData),
         });
 
-        console.log("response",response);
+        console.log("response", response);
 
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
@@ -206,11 +207,11 @@ const ProductManagement = () => {
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     toast.loading('Saving product...');
 
 
-    if(deleteImages.length > 0) {
+    if (deleteImages.length > 0) {
       handleRequest('deleteImages', { images: deleteImages })
         .then(_ => {
           console.log('Images deleted successfully');
@@ -219,7 +220,7 @@ const ProductManagement = () => {
           console.error('Error deleting images');
         });
     }
-  
+
 
     if (formData.id) {
       handleRequest('updateProduct', formData)
@@ -237,7 +238,7 @@ const ProductManagement = () => {
         });
     } else {
 
-      console.log("images",{imageFiles, previewImages});
+      console.log("images", { imageFiles, previewImages });
 
       handleRequest('addProduct', formData)
         .then(data => {
@@ -259,7 +260,7 @@ const ProductManagement = () => {
     // Reset image states
     setImageFiles([]);
     setPreviewImages([]);
-    
+
     if (product) {
       setFormData({
         ...product,
@@ -276,6 +277,7 @@ const ProductManagement = () => {
         price: '',
         quantity: '',
         size: '',
+        category: '',
       });
     }
     setIsFormOpen(true);
@@ -329,7 +331,7 @@ const ProductManagement = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="product-management-form-group">
                   <label className="product-management-label">Images</label>
                   <div className="product-management-image-upload">
@@ -341,19 +343,19 @@ const ProductManagement = () => {
                       multiple
                       accept="image/*"
                     />
-                    <button 
-                      type="button" 
-                      onClick={() => fileInputRef.current?.click()} 
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
                       className="product-management-upload-button"
                     >
                       Select Images
                     </button>
                   </div>
-                  
+
                   <div className="product-management-image-preview-container">
-                  {/* {console.log("images", formData) as any}    */}
-                  {formData.images && formData.images[0] && Array.isArray(formData.images[0]) && formData.images[0].map((image: string, index: number) => (
-                    
+                    {/* {console.log("images", formData) as any}    */}
+                    {formData.images && formData.images[0] && Array.isArray(formData.images[0]) && formData.images[0].map((image: string, index: number) => (
+
                       <div key={`existing-${index}`} className="product-management-image-preview-wrapper">
                         <img
                           src={image}
@@ -362,14 +364,14 @@ const ProductManagement = () => {
                         />
                         <button
                           type="button"
-                          onClick={() => removeExistingImage(index )}
+                          onClick={() => removeExistingImage(index)}
                           className="product-management-remove-image"
                         >
                           ×
                         </button>
                       </div>
                     ))}
-                    
+
                     {/* New image previews */}
                     {previewImages.map((preview, index) => (
                       <div key={`new-${index}`} className="product-management-image-preview-wrapper">
@@ -389,7 +391,7 @@ const ProductManagement = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="product-management-form-group">
                   <label className="product-management-label">Description</label>
                   <textarea
@@ -435,6 +437,19 @@ const ProductManagement = () => {
                     className="product-management-input"
                   />
                 </div>
+                <div className="product-management-form-group">
+                  <label className="product-management-label">Category</label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                    className="product-management-input"
+                  >
+                    <option value="">Select a category</option>
+                    <option value="abc">abc</option>
+                    <option value="abcd">abcd</option>
+                  </select>
+                </div>
                 <div className="product-management-form-actions">
                   <button
                     type="button"
@@ -467,44 +482,44 @@ const ProductManagement = () => {
               </tr>
             </thead>
             <tbody>
-    
-                {products.map((product) => (
+
+              {products.map((product) => (
                 <tr key={product.id}>
                   <td className="product-management-table-cell">{product.name}</td>
                   <td className="product-management-table-cell product-management-image-cell">
-                  {product.images && product.images.length > 0 && product.images[0] && Array.isArray(product.images[0]) ? (
-                    // Handle nested array structure
-                    <div className="product-management-table-images">
-                    <img
-                      src={product.images[0][0]}
-                      alt={product.name}
-                      className="product-management-image"
-                    />
-                    {product.images[0].length > 1 && (
-                      <span className="product-management-image-count">
-                      +{product.images[0].length - 1} more
-                      </span>
-                    )}
-                    </div>
-                  ) : (
-                    // Handle flat array structure
-                    product.images && product.images.length > 0 ? (
-                    <div className="product-management-table-images">
-                      <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      className="product-management-image"
-                      />
-                      {product.images.length > 1 && (
-                      <span className="product-management-image-count">
-                        +{product.images.length - 1} more
-                      </span>
-                      )}
-                    </div>
+                    {product.images && product.images.length > 0 && product.images[0] && Array.isArray(product.images[0]) ? (
+                      // Handle nested array structure
+                      <div className="product-management-table-images">
+                        <img
+                          src={product.images[0][0]}
+                          alt={product.name}
+                          className="product-management-image"
+                        />
+                        {product.images[0].length > 1 && (
+                          <span className="product-management-image-count">
+                            +{product.images[0].length - 1} more
+                          </span>
+                        )}
+                      </div>
                     ) : (
-                    <div className="product-management-no-image">No image</div>
-                    )
-                  )}
+                      // Handle flat array structure
+                      product.images && product.images.length > 0 ? (
+                        <div className="product-management-table-images">
+                          <img
+                            src={product.images[0]}
+                            alt={product.name}
+                            className="product-management-image"
+                          />
+                          {product.images.length > 1 && (
+                            <span className="product-management-image-count">
+                              +{product.images.length - 1} more
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="product-management-no-image">No image</div>
+                      )
+                    )}
                   </td>
                   <td className="product-management-table-cell">₹{product.price}</td>
                   <td className="product-management-table-cell">{product.quantity}</td>
@@ -535,263 +550,4 @@ const ProductManagement = () => {
 
 export default ProductManagement;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { toast } from 'react-toastify';
-// import ProductForm from './adminForm';
-
-// interface Product {
-//   id: number | null;
-//   name: string;
-//   images: string[];
-//   description: string;
-//   price: string;
-//   quantity: string;
-//   size: string;
-// }
-
-// const ProductManagement = () => {
-//   const [products, setProducts] = useState<Product[]>([]);
-//   const [isFormOpen, setIsFormOpen] = useState(false);
-//   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-//   useEffect(() => {
-//     fetchProducts();
-//   }, []);
-
-//   const fetchProducts = () => {
-//     fetch('/api/admin/product/getProduct')
-//       .then(response => response.json())
-//       .then(data => {
-//         // Convert legacy 'image' field to 'images' array for backward compatibility
-//         const updatedProducts = data.products.map((product: any) => ({
-//           ...product,
-//           images: product.images || (product.image ? [product.image] : []),
-//         }));
-//         console.log("updatedProducts", updatedProducts);
-//         setProducts(updatedProducts);
-//       })
-//       .catch(_ => {
-//         toast.error('Error fetching products');
-//       });
-//   };
-
-//   const handleDelete = (id: number) => {
-//     toast.loading('Deleting product...');
-    
-//     fetch('/api/admin/product/deleteProduct', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({ id }),
-//     })
-//       .then(response => response.json())
-//       .then(_ => {
-//         const updatedProducts = products.filter((product) => product.id !== id);
-//         setProducts(updatedProducts);
-//         toast.dismiss();
-//         toast.success('Product deleted successfully');
-//       })
-//       .catch(_ => {
-//         toast.dismiss();
-//         toast.error('Error deleting product');
-//       });
-//   };
-
-//   const openForm = (product: Product | null = null) => {
-//     setSelectedProduct(product);
-//     setIsFormOpen(true);
-//   };
-
-//   const closeForm = () => {
-//     setSelectedProduct(null);
-//     setIsFormOpen(false);
-//   };
-
-//   const handleProductSaved = (savedProduct: Product) => {
-//     if (savedProduct.id) {
-//       // Update existing product in list
-//       setProducts(products.map(p => 
-//         p.id === savedProduct.id ? savedProduct : p
-//       ));
-//     } else {
-//       // Add new product to list
-//       setProducts([...products, savedProduct]);
-//     }
-//     closeForm();
-//   };
-
-//   return (
-//     <div className="product-management-container">
-//       <div className="product-management-content">
-//         <h1 className="product-management-title">Product Management</h1>
-
-//         <button onClick={() => openForm()} className="product-management-add-button">
-//           Add Product
-//         </button>
-
-//         {isFormOpen && (
-//           <ProductForm
-//             product={selectedProduct}
-//             onClose={closeForm}
-//             onSave={handleProductSaved}
-//           />
-//         )}
-
-//         <div className="product-management-table-container">
-//           <table className="product-management-table">
-//             <thead>
-//               <tr>
-//                 <th className="product-management-table-header">Name</th>
-//                 <th className="product-management-table-header">Images</th>
-//                 <th className="product-management-table-header">Price</th>
-//                 <th className="product-management-table-header">Quantity</th>
-//                 <th className="product-management-table-header">Size</th>
-//                 <th className="product-management-table-header product-management-table-actions-header">
-//                   Actions
-//                 </th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {products.map((product) => (
-//                 <tr key={product.id}>
-//                   <td className="product-management-table-cell">{product.name}</td>
-//                     <td className="product-management-table-cell product-management-image-cell">
-//                     {product.images[0] && product.images[0].length > 0 ? (
-//                       <div className="product-management-table-images">
-//                         <img
-//                         src={product.images[0][0]}
-//                         alt={product.name}
-//                         className="product-management-image"
-//                         onClick={(e) => {
-//                           e.stopPropagation();
-//                           // Create modal to show all images
-//                           const modal = document.createElement('div');
-//                           modal.className = 'product-image-modal';
-//                           modal.innerHTML = `
-//                           <div class="product-image-modal-content">
-//                             <span class="close-modal">&times;</span>
-//                             <h3>${product.name} - All Images</h3>
-//                             <div class="product-image-gallery">
-//                             ${product.images.map(img => `
-//                               <img src="${img}" alt="${product.name}" class="modal-product-image" />
-//                             `).join('')}
-//                             </div>
-//                           </div>
-//                           `;
-//                           document.body.appendChild(modal);
-                          
-//                           // Add close functionality
-//                           const closeBtn = modal.querySelector('.close-modal');
-//                           closeBtn?.addEventListener('click', () => {
-//                           document.body.removeChild(modal);
-//                           });
-                          
-//                           // Close when clicking outside the modal content
-//                           modal.addEventListener('click', (e) => {
-//                           if (e.target === modal) {
-//                             document.body.removeChild(modal);
-//                           }
-//                           });
-//                         }}
-//                         style={{ cursor: 'pointer' }}
-//                         />
-//                         {product.images.length > 1 && (
-//                         <span className="product-management-image-count">
-//                           +{product.images.length - 1} more
-//                         </span>
-//                         )}
-//                       </div>
-//                     ) : (
-//                       <div className="product-management-no-image">No image</div>
-//                     )}
-//                     </td>
-//                   <td className="product-management-table-cell">₹{product.price}</td>
-//                   <td className="product-management-table-cell">{product.quantity}</td>
-//                   <td className="product-management-table-cell">{product.size}</td>
-//                   <td className="product-management-table-cell product-management-table-actions">
-//                     <button
-//                       onClick={() => openForm(product)}
-//                       className="product-management-edit-button"
-//                     >
-//                       Edit
-//                     </button>
-//                     <button
-//                       onClick={() => product.id !== null && handleDelete(product.id)}
-//                       className="product-management-delete-button"
-//                     >
-//                       Delete
-//                     </button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProductManagement;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 

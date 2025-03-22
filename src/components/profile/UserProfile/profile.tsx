@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faEdit, 
-  faHistory, 
-  faHeart, 
-  faQuestionCircle, 
-  faEnvelope, 
-  faTruck, 
+import {
+  faEdit,
+  faHistory,
+  faHeart,
+  faQuestionCircle,
+  faEnvelope,
+  faTruck,
   faFileAlt,
   faSave,
   faTimes,
@@ -16,6 +16,7 @@ import {
   faBuilding
 } from '@fortawesome/free-solid-svg-icons';
 import { getUser, user } from '@/database/Auth';
+import { getProfile } from '@/store/server';
 
 interface Address {
   id: string;
@@ -27,20 +28,29 @@ interface Address {
   isDefault: boolean;
 }
 
-interface UserData {
-  name: string;
-  email: string;
-  phone: string;
-  addresses: Address[];
-  profilePicture: string;
-}
+// interface UserData {
+//   name: string;
+//   email: string;
+//   phone: string;
+//   addresses: Address[];
+//   profilePicture: string;
+// }
 
 const Profile = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  interface UserData {
+    name: string;
+    email: string;
+    phone: string;
+    addresses: Address[];
+    profilePicture: string | null;
+  }
+
+  const [userData, setUserData] = useState<UserData | null>(user?.user || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState<UserData | null>(null);
+
   const [newAddress, setNewAddress] = useState<Omit<Address, 'id' | 'isDefault'>>({
     type: 'Shipping',
     street: '',
@@ -49,57 +59,34 @@ const Profile = () => {
     zipCode: '',
   });
   const [showAddressForm, setShowAddressForm] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
-if (!user) {
-  await getUser();
-}
-
-
-      try {
-        // Simulate fetching dummy data
-        const dummyData: UserData = {
-          name: "John Doe",
-          email: "john.doe@example.com",
-          phone: "123-456-7890",
-          profilePicture: "profile-placeholder.jpg",
-          addresses: [
-            {
-              id: '1',
-              type: 'Shipping',
-              street: '123 Main St',
-              city: 'Anytown',
-              state: 'CA',
-              zipCode: '12345',
-              isDefault: true
-            },
-            {
-              id: '2',
-              type: 'Billing',
-              street: '456 Oak Ave',
-              city: 'Anytown',
-              state: 'CA',
-              zipCode: '12345',
-              isDefault: true
-            }
-          ]
-        };
-        
-        // Simulate a delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        setUserData(dummyData);
-        setEditedData(JSON.parse(JSON.stringify(dummyData)));
-
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setLoading(false);
+      let userDB: any = null;
+      if (!user) {
+        await getUser();
       }
+
+      if (user) {
+        userDB = await getProfile(user.user.id);
+      }
+
+      const data = {
+        name: user.user.user_metadata.name,
+        email: user.user.user_metadata.email,
+        phone: userDB && userDB.mobile_no ? userDB.mobile_no : '',
+        addresses: userDB && userDB.billing_address && userDB.shipping_address ? [
+          userDB.billing_address,
+          userDB.shipping_address
+        ] : [],
+        profilePicture: user.user.profilePicture || null
+      }
+
+      console.log("data", data)
+      setUserData(data)
+      setEditedData(JSON.parse(JSON.stringify(data)))
+      setLoading(false);
     };
 
     fetchData();
@@ -112,29 +99,28 @@ if (!user) {
   const handleCancel = () => {
     setIsEditing(false);
     setEditedData(JSON.parse(JSON.stringify(userData)));
-    setImagePreview(null);
     setShowAddressForm(false);
   };
 
   const handleSave = async () => {
     setLoading(true);
     try {
+      console.log("editedData", editedData)
       // Simulate API call to save data
       await new Promise(resolve => setTimeout(resolve, 500));
-      
-    fetch('/api/auth/profile', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: user.id, data: editedData }),
-    })
+
+      fetch('/api/auth/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: user.user.id, data: editedData }),
+      })
       if (editedData) {
         setUserData(editedData);
       }
       setIsEditing(false);
       setShowAddressForm(false);
-      setImagePreview(null);
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -167,12 +153,12 @@ if (!user) {
         id: Date.now().toString(),
         isDefault: editedData.addresses.filter(a => a.type === newAddress.type).length === 0
       };
-      
+
       setEditedData({
         ...editedData,
         addresses: [...editedData.addresses, newAddressComplete]
       });
-      
+
       setNewAddress({
         type: 'Shipping',
         street: '',
@@ -180,7 +166,7 @@ if (!user) {
         state: '',
         zipCode: '',
       });
-      
+
       setShowAddressForm(false);
     }
   };
@@ -205,28 +191,11 @@ if (!user) {
         }
         return address;
       });
-      
+
       setEditedData({
         ...editedData,
         addresses: updatedAddresses
       });
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-        if (editedData) {
-          setEditedData({
-            ...editedData,
-            profilePicture: reader.result as string
-          });
-        }
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -235,7 +204,7 @@ if (!user) {
   if (!userData) return <div className="no-data-message">No profile data found.</div>;
 
   const getAddressesByType = (type: string) => {
-    return (isEditing ? editedData : userData)?.addresses.filter(addr => addr.type === type) || [];
+    return (isEditing ? editedData : userData)?.addresses?.filter(addr => addr.type === type) || [];
   };
 
   const getAddressIcon = (type: string) => {
@@ -253,27 +222,17 @@ if (!user) {
       {/* Profile Header */}
       <div className="profile-header">
         <div className="profile-picture-container">
-          <img 
-            src={imagePreview || (isEditing ? editedData?.profilePicture : userData.profilePicture)} 
-            alt="Profile" 
-            className="profile-picture" 
+          <img
+            src={(isEditing ? editedData?.profilePicture : userData.profilePicture) || '/default-avatar.svg'}
+            alt="Profile"
+            className="profile-picture"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/default-avatar.svg';
+            }}
           />
-          {isEditing && (
-            <div className="profile-picture-edit">
-              <label htmlFor="profile-picture" className="profile-picture-edit-label">
-                <FontAwesomeIcon icon={faEdit} /> Change Photo
-              </label>
-              <input 
-                type="file" 
-                id="profile-picture" 
-                className="profile-picture-input" 
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </div>
-          )}
         </div>
-        
+
         <div className="profile-info">
           {isEditing ? (
             <div className="profile-edit-form">
@@ -302,7 +261,7 @@ if (!user) {
             </>
           )}
         </div>
-        
+
         {isEditing ? (
           <div className="edit-profile-buttons">
             <button
@@ -363,7 +322,7 @@ if (!user) {
               </button>
             )}
           </div>
-          
+
           {/* Add Address Form */}
           {isEditing && showAddressForm && (
             <div className="address-form-container">
@@ -463,14 +422,14 @@ if (!user) {
                     {isEditing && (
                       <div className="address-actions">
                         {!address.isDefault && (
-                          <button 
+                          <button
                             onClick={() => handleSetDefaultAddress(address.id, address.type)}
                             className="make-default-button"
                           >
                             Set Default
                           </button>
                         )}
-                        <button 
+                        <button
                           onClick={() => handleRemoveAddress(address.id)}
                           className="remove-address-button"
                         >
@@ -505,14 +464,14 @@ if (!user) {
                     {isEditing && (
                       <div className="address-actions">
                         {!address.isDefault && (
-                          <button 
+                          <button
                             onClick={() => handleSetDefaultAddress(address.id, address.type)}
                             className="make-default-button"
                           >
                             Set Default
                           </button>
                         )}
-                        <button 
+                        <button
                           onClick={() => handleRemoveAddress(address.id)}
                           className="remove-address-button"
                         >
@@ -547,14 +506,14 @@ if (!user) {
                     {isEditing && (
                       <div className="address-actions">
                         {!address.isDefault && (
-                          <button 
+                          <button
                             onClick={() => handleSetDefaultAddress(address.id, address.type)}
                             className="make-default-button"
                           >
                             Set Default
                           </button>
                         )}
-                        <button 
+                        <button
                           onClick={() => handleRemoveAddress(address.id)}
                           className="remove-address-button"
                         >
@@ -586,14 +545,14 @@ if (!user) {
                     {isEditing && (
                       <div className="address-actions">
                         {!address.isDefault && (
-                          <button 
+                          <button
                             onClick={() => handleSetDefaultAddress(address.id, address.type)}
                             className="make-default-button"
                           >
                             Set Default
                           </button>
                         )}
-                        <button 
+                        <button
                           onClick={() => handleRemoveAddress(address.id)}
                           className="remove-address-button"
                         >

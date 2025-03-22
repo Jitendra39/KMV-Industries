@@ -10,49 +10,56 @@ export default async function handler(
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
-  const userId = req.headers['user-id'];
+  const userId = req.headers["user-id"];
 
-  const authAdmin = await adminAuth(userId)
-  if(!authAdmin){
-    return res.status(401).json({ error: 'Unauthorized' });
+  const authAdmin = await adminAuth(userId);
+  if (!authAdmin) {
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   try {
-    // Log the request body
-    console.log("Request body:", req.body);
-
     // Extract product data and ID from request body
-    const { id, name, image, images, description, price, quantity, size } = req.body;
+    const {
+      id,
+      name,
+      image,
+      images,
+      description,
+      price,
+      quantity,
+      size,
+      category,
+    } = req.body;
 
     // Process images to create a flat array of URLs
     let processedImages: string[] = [];
-    
+
     // Handle image data if it exists
     if (image) {
       // Process nested arrays and direct URLs
       if (Array.isArray(image)) {
-        image.forEach(item => {
+        image.forEach((item) => {
           if (Array.isArray(item)) {
             // Extract URLs from nested arrays
-            if (item[1] && typeof item[1] === 'string') {
+            if (item[1] && typeof item[1] === "string") {
               processedImages.push(item[1]);
             }
-          } else if (typeof item === 'string') {
+          } else if (typeof item === "string") {
             // Direct URL strings
             processedImages.push(item);
           }
         });
       }
     }
-    
+
     // Similarly process the images array if it exists
     if (images && Array.isArray(images)) {
-      images.forEach(item => {
+      images.forEach((item) => {
         if (Array.isArray(item)) {
-          if (item[1] && typeof item[1] === 'string') {
+          if (item[1] && typeof item[1] === "string") {
             processedImages.push(item[1]);
           }
-        } else if (typeof item === 'string') {
+        } else if (typeof item === "string") {
           processedImages.push(item);
         }
       });
@@ -67,7 +74,7 @@ export default async function handler(
       quantity,
       size,
     });
-    
+
     // Validate required fields
     if (!id) {
       return res.status(400).json({ message: "Product ID is required" });
@@ -81,7 +88,7 @@ export default async function handler(
     if (price !== undefined) updateData.price = price;
     if (quantity !== undefined) updateData.quantity = quantity;
     if (size !== undefined) updateData.size = size;
-
+    if (category != undefined) updateData.category = category;
     console.log("Update data:", updateData);
 
     // Update the product in the database
@@ -108,7 +115,7 @@ export default async function handler(
     // Return success response
     return res.status(201).json({
       message: "Product updated successfully",
-      product: updatedProduct
+      product: updatedProduct,
     });
   } catch (error: any) {
     console.error("Error updating product:", error);

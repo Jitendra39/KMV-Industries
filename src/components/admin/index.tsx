@@ -8,11 +8,11 @@ const AdminHome = () => {
       <StyledAdminHomeTitle>Admin Panel</StyledAdminHomeTitle>
       <StyledAdminHomeLinks>
         {[
-          { name: "Dashboard", path: "/dashboard" },
-          { name: "Product Management", path: "/product-management" },
-          { name: "Analytics & Details", path: "/order-details" },
-          { name: "Promotional Code", path: "/promotional-code" },
-          { name: "Stock Management", path: "/stock-management" },
+          { name: "Dashboard", path: "/admin/dashboard" },
+          { name: "Product Management", path: "/admin/product-management" },
+          { name: "Analytics & Details", path: "/admin/order-details" },
+          { name: "Promotional Code", path: "/admin/promotional-code" },
+          { name: "Stock Management", path: "/admin/stock-management" },
         ].map((item) => (
           <Link key={item.name} href={item.path} passHref>
             <StyledAdminHomeButton>
